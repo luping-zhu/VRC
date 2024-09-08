@@ -1,18 +1,21 @@
 #include "main.h"
-//hi!
-//hiya
+
+#include "api.h"
+
+inline pros::MotorGroup intake({-10, 11}); // Make this number negative if you want to reverse the motor
+
 /* Documentation */
 // https://ez-robotics.github.io/EZ-Template/
 
 // Chassis constructor, edit accordingly
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {1, -2, -3},  // Left Chassis Ports, (use negative numbers for reversed motors!)
-    {-11, 12, 13},  // Right Chassis Ports (use negative numbers for reversed motors!)
+    {-16, -17},  // Left Chassis Ports, (use negative numbers for reversed motors!)
+    {6, 7},  // Right Chassis Ports (use negative numbers for reversed motors!)
 
-    7,          // IMU (inertial) port
+    8,          // IMU (inertial) port
     3.25,       // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    100         // Wheel RPM
+    300         // Wheel RPM
 );
 
 /**
@@ -121,6 +124,9 @@ void opcontrol()
   pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_HOLD;
   chassis.drive_brake_set(driver_preference_brake);
 
+  int speed = 0;
+  int INTAKE_SPEED = 90;
+
   while (true) 
   {
     // chassis.opcontrol_tank();  // Tank control
@@ -132,6 +138,20 @@ void opcontrol()
     // . . .
     // Put more user control code here!
     // . . .
+
+    if (master.get_digital(DIGITAL_A)) {
+      if (speed == 0) {
+        speed = INTAKE_SPEED;
+      } else {
+        speed = 0;
+      }
+    } 
+
+    if (master.get_digital(DIGITAL_X)) {
+        speed = -INTAKE_SPEED;
+    } 
+
+    intake.move(speed);
 
     // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
     pros::delay(ez::util::DELAY_TIME);
