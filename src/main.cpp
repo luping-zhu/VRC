@@ -140,6 +140,9 @@ void opcontrol()
     // Put more user control code here!
     // . . .
 
+    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN))
+      autonomous();
+
     if (master.get_digital_new_press(DIGITAL_A)) {
       if (speed == 0) {
         speed = INTAKE_SPEED;
@@ -159,30 +162,4 @@ void opcontrol()
     // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
     pros::delay(ez::util::DELAY_TIME);
   }
-  
-}
-void auto(){
-  chassis.pid_drive_set(100, 100);
-  chassis.pid_wait();
-
-  chassis.pid_turn_set(90, 70);
-  chassis.pid_wait();
-  master.print(0, 0, "IMU: %.2f", chassis.drive_imu_get());
-
-  chassis.pid_drive_set(100, 100);
-  chassis.pid_wait();
-
-  chassis.pid_turn_set(180, 70);
-  chassis.pid_wait();
-  master.print(0, 0, "IMU: %.2f", chassis.drive_imu_get());
-
-  chassis.pid_drive_set(100, 100);
-  chassis.pid_wait();
-
-  chassis.pid_turn_set(270, 70);
-  chassis.pid_wait();
-  master.print(0, 0, "IMU: %.2f", chassis.drive_imu_get());
-
-  chassis.pid_drive_set(100, 100);
-  chassis.pid_wait();
 }

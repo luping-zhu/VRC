@@ -4,6 +4,7 @@
 #include "EZ-Template/drive/drive.hpp"
 extern Drive chassis;
 void default_constants();
+void square();
 
 
 // Add autonomous function declarations here

@@ -35,3 +35,30 @@ void default_constants() {
 }
 
 // Add your autonomous functions here
+
+void square() {
+  chassis.pid_drive_set(95, 100);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(90, 70);
+  chassis.pid_wait();
+  master.print(0, 0, "IMU: %.2f", chassis.drive_imu_get());
+
+  chassis.pid_drive_set(95, 100);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(180, 70);
+  chassis.pid_wait();
+  master.print(0, 0, "IMU: %.2f", chassis.drive_imu_get());
+
+  chassis.pid_drive_set(95, 100);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(270, 70);
+  chassis.pid_wait();
+  master.print(0, 0, "IMU: %.2f", chassis.drive_imu_get());
+
+  chassis.pid_drive_set(95, 100);
+  chassis.pid_wait();
+  
+}
