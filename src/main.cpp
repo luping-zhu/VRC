@@ -126,6 +126,7 @@ void opcontrol()
 
   int speed = 0;
   int INTAKE_SPEED = 90;
+  ez::Piston piston('A', false);
 
   while (true) 
   {
@@ -139,7 +140,7 @@ void opcontrol()
     // Put more user control code here!
     // . . .
 
-    if (master.get_digital(DIGITAL_A)) {
+    if (master.get_digital_new_press(DIGITAL_A)) {
       if (speed == 0) {
         speed = INTAKE_SPEED;
       } else {
@@ -147,11 +148,13 @@ void opcontrol()
       }
     } 
 
-    if (master.get_digital(DIGITAL_X)) {
-        speed = -INTAKE_SPEED;
-    } 
+    // if (master.get_digital_new_press(DIGITAL_X)) {
+    //     speed = -INTAKE_SPEED;
+    // } 
 
     intake.move(speed);
+
+    piston.button_toggle(master.get_digital(DIGITAL_X));
 
     // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
     pros::delay(ez::util::DELAY_TIME);
