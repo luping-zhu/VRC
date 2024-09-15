@@ -1,6 +1,8 @@
 #include "main.h"
-//hi!
-//hiya
+
+#define INTAKE_PORT 8
+#define INTAKE_SPEED 70
+
 /* Documentation */
 // https://ez-robotics.github.io/EZ-Template/
 
@@ -121,8 +123,12 @@ void opcontrol()
   pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_HOLD;
   chassis.drive_brake_set(driver_preference_brake);
 
+  ez::Piston piston('H', false);
+  pros::Motor intake(INTAKE_PORT);
+  int speed = 0;
+
   while (true) 
-  {
+                                                         {
     // chassis.opcontrol_tank();  // Tank control
     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
@@ -133,6 +139,18 @@ void opcontrol()
     // Put more user control code here!
     // . . .
 
+    if (master.get_digital(DIGITAL_A)) {
+      if (speed == 0) {
+        speed = -INTAKE_SPEED;
+      } else {
+        speed = 0;
+      }
+    }
+
+    intake.move(speed);
+
+    piston.button_toggle(master.get_digital(DIGITAL_X));
+    
     // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
     pros::delay(ez::util::DELAY_TIME);
   }

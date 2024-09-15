@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "Blank (Initial)",
+    "project_name": "16800A",
     "target": "v5",
     "templates": {
       "EZ-Template": {
@@ -423,7 +423,7 @@
     "upload_options": {
       "description": "Code for a functioning drivetrain",
       "after": "screen",
-      "icon": "pros"
+      "icon": "power"
     },
     "use_early_access": false
   }
