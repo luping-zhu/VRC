@@ -2,7 +2,7 @@
 
 #include "api.h"
 
-inline pros::MotorGroup intake({-10, 11}); // Make this number negative if you want to reverse the motor
+inline pros::MotorGroup intake({-11, 12}); // Make this number negative if you want to reverse the motor
 
 /* Documentation */
 // https://ez-robotics.github.io/EZ-Template/
@@ -10,10 +10,10 @@ inline pros::MotorGroup intake({-10, 11}); // Make this number negative if you w
 // Chassis constructor, edit accordingly
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {-16, -17},  // Left Chassis Ports, (use negative numbers for reversed motors!)
-    {6, 7},  // Right Chassis Ports (use negative numbers for reversed motors!)
+    {-16, -20},  // Left Chassis Ports, (use negative numbers for reversed motors!)
+    {15, 19},  // Right Chassis Ports (use negative numbers for reversed motors!)
 
-    8,          // IMU (inertial) port
+    14,          // IMU (inertial) port
     3.25,       // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     300         // Wheel RPM
 );
@@ -102,6 +102,7 @@ void autonomous()
 
   // Calls selected auton from autonomous selector
   ez::as::auton_selector.selected_auton_call();
+  square();
 }
 
 /**
