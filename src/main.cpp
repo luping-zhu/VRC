@@ -1,6 +1,6 @@
 #include "main.h"
 
-#define INTAKE_PORT 8
+//#define INTAKE_PORT 8
 #define INTAKE_SPEED 70
 
 /* Documentation */
@@ -124,7 +124,8 @@ void opcontrol()
   chassis.drive_brake_set(driver_preference_brake);
 
   ez::Piston piston('H', false);
-  pros::Motor intake(INTAKE_PORT);
+  pros::MotorGroup intake({-7, 8});
+  //pros::Motor intake(INTAKE_PORT);
   int speed = 0;
 
   while (true) 
