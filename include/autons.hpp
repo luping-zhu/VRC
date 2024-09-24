@@ -5,6 +5,6 @@
 extern Drive chassis;
 void default_constants();
 void square();
-
+void auton_test();
 
 // Add autonomous function declarations here

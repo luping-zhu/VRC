@@ -62,3 +62,12 @@ void square() {
   chassis.pid_wait();
   
 }
+
+void auton_test() {
+  chassis.pid_drive_set(-25, 100);
+  chassis.pid_wait();
+  piston.set(true);
+  intake.move(INTAKE_SPEED);
+  chassis.pid_wait_quick_chain();
+  intake.move(0);
+}

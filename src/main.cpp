@@ -2,8 +2,6 @@
 
 #include "api.h"
 
-inline pros::MotorGroup intake({-11, 12}); // Make this number negative if you want to reverse the motor
-
 /* Documentation */
 // https://ez-robotics.github.io/EZ-Template/
 
@@ -102,7 +100,8 @@ void autonomous()
 
   // Calls selected auton from autonomous selector
   ez::as::auton_selector.selected_auton_call();
-  square();
+  //square();
+  auton_test();
 }
 
 /**
@@ -126,8 +125,6 @@ void opcontrol()
   chassis.drive_brake_set(driver_preference_brake);
 
   int speed = 0;
-  int INTAKE_SPEED = 90;
-  ez::Piston piston('A', false);
 
   while (true) 
   {
