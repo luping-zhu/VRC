@@ -3,7 +3,9 @@
 #include "api.h"
 
 inline pros::MotorGroup intake({-11, 12}); 
-inline ez::Piston piston('A', false);
+inline ez::Piston piston_mobile('A', false);
+inline ez::Piston piston_side('B', false);
+inline ez::Piston piston_top('C', false);
 
 inline int INTAKE_SPEED = 90;
 

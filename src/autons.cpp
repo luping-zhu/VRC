@@ -64,10 +64,22 @@ void square() {
 }
 
 void auton_test() {
-  chassis.pid_drive_set(-25, 100);
+  chassis.pid_drive_set(-30, 100);
   chassis.pid_wait();
-  piston.set(true);
+
+  piston_mobile.set(true);
+
   intake.move(INTAKE_SPEED);
-  chassis.pid_wait_quick_chain();
+  pros::delay(2000);
   intake.move(0);
+  piston_mobile.set(false);
+
+  chassis.pid_drive_set(10, 100);
+  chassis.pid_wait();
+
+  //chassis.pid_turn_set(-90, 100);
+  //chassis.pid_wait();
+
+  //chassis.pid_drive_set(30, 100);
+  //chassis.pid_wait();
 }

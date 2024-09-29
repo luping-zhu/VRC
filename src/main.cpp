@@ -149,13 +149,17 @@ void opcontrol()
       }
     } 
 
-    // if (master.get_digital_new_press(DIGITAL_X)) {
-    //     speed = -INTAKE_SPEED;
-    // } 
+    if (master.get_digital_new_press(DIGITAL_B)) {
+         speed = -INTAKE_SPEED;
+    } 
 
     intake.move(speed);
 
-    piston.button_toggle(master.get_digital(DIGITAL_X));
+    piston_mobile.button_toggle(master.get_digital(DIGITAL_X));
+
+    piston_side.button_toggle(master.get_digital_new_press(DIGITAL_Y));
+
+    piston_top.button_toggle(master.get_digital_new_press(DIGITAL_UP));
 
     // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
     pros::delay(ez::util::DELAY_TIME);
