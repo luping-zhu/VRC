@@ -148,6 +148,10 @@ void opcontrol()
       }
     }
 
+    if (master.get_digital_new_press(DIGITAL_Y)) {
+        speed = INTAKE_SPEED;
+    }
+
     intake.move(speed);
 
     piston.button_toggle(master.get_digital(DIGITAL_X));
