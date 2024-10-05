@@ -1,7 +1,7 @@
 #include "main.h"
 
 //#define INTAKE_PORT 8
-#define INTAKE_SPEED 70
+#define INTAKE_SPEED 100
 
 /* Documentation */
 // https://ez-robotics.github.io/EZ-Template/
@@ -124,7 +124,7 @@ void opcontrol()
   chassis.drive_brake_set(driver_preference_brake);
 
   ez::Piston piston('H', false);
-  pros::MotorGroup intake({-7, 8});
+  pros::MotorGroup intake({5, 8});
   //pros::Motor intake(INTAKE_PORT);
   int speed = 0;
 
@@ -148,7 +148,7 @@ void opcontrol()
       }
     }
 
-    if (master.get_digital_new_press(DIGITAL_Y)) {
+    if (master.get_digital_new_press(DIGITAL_B)) {
         speed = INTAKE_SPEED;
     }
 
