@@ -1,7 +1,6 @@
 #include "main.h"
 
 //#define INTAKE_PORT 8
-#define INTAKE_SPEED 100
 
 /* Documentation */
 // https://ez-robotics.github.io/EZ-Template/
@@ -123,8 +122,6 @@ void opcontrol()
   pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_HOLD;
   chassis.drive_brake_set(driver_preference_brake);
 
-  ez::Piston piston('H', false);
-  pros::MotorGroup intake({5, 8});
   //pros::Motor intake(INTAKE_PORT);
   int speed = 0;
 
@@ -154,7 +151,7 @@ void opcontrol()
 
     intake.move(speed);
 
-    piston.button_toggle(master.get_digital(DIGITAL_X));
+    piston_mobile.button_toggle(master.get_digital(DIGITAL_X));
     
     // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
     pros::delay(ez::util::DELAY_TIME);
