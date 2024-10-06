@@ -83,3 +83,51 @@ void auton_test() {
   //chassis.pid_drive_set(30, 100);
   //chassis.pid_wait();
 }
+
+
+void red_left(){
+  chassis.pid_drive_set(35, 100);
+  chassis.pid_wait();
+  chassis.pid_turn_set(90, 100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(10, 100);
+}
+
+
+void red_right(){
+  chassis.pid_drive_set(-50, 70);
+  chassis.pid_wait();
+  piston_mobile.set(true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-30, 100);
+  chassis.pid_wait();
+  intake.move(INTAKE_SPEED);
+  chassis.pid_drive_set(25, 100);
+  chassis.pid_wait();
+  pros::delay(2000);
+  intake.move(0);
+}
+
+
+void blue_left(){
+  chassis.pid_drive_set(-50, 70);
+  chassis.pid_wait();
+  piston_mobile.set(true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(30, 100);
+  chassis.pid_wait();
+  intake.move(INTAKE_SPEED);
+  chassis.pid_drive_set(25, 100);
+  chassis.pid_wait();
+  pros::delay(2000);
+  intake.move(0);
+}
+
+
+void blue_right(){
+  chassis.pid_drive_set(35, 100);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-90, 100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(10, 100);
+}

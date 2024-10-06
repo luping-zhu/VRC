@@ -6,5 +6,8 @@ extern Drive chassis;
 void default_constants();
 void square();
 void auton_test();
-
+void red_left();
+void red_right();
+void blue_left();
+void blue_right();
 // Add autonomous function declarations here

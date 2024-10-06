@@ -96,12 +96,14 @@ void autonomous()
   chassis.pid_targets_reset();                // Resets PID targets to 0
   chassis.drive_imu_reset();                  // Reset gyro position to 0
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
-  chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold. This helps autonomous consistency
+  chassis.drive_brake_set(MOTOR_BRAKE_BRAKE);  // Set motors to hold. This helps autonomous consistency
 
   // Calls selected auton from autonomous selector
   ez::as::auton_selector.selected_auton_call();
   //square();
-  auton_test();
+  //auton_test();
+  //red_right();
+  //blue_left();
 }
 
 /**
@@ -121,7 +123,7 @@ void opcontrol()
 {
   // This is preference to what you like to drive on
   // MOTOR_BRAKE_HOLD (recommended), MOTOR_BRAKE_BRAKE, MOTOR_BRAKE_COAST
-  pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_HOLD;
+  pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_BRAKE;
   chassis.drive_brake_set(driver_preference_brake);
 
   int speed = 0;
