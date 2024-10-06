@@ -100,6 +100,9 @@ void autonomous()
 
   // Calls selected auton from autonomous selector
   ez::as::auton_selector.selected_auton_call();
+
+  // square();
+  // auton_test();
 }
 
 /**
