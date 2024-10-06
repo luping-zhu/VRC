@@ -104,6 +104,7 @@ void autonomous()
   //auton_test();
   //red_right();
   //blue_left();
+  blue_right();
 }
 
 /**

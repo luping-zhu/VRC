@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "RedRight",
+    "project_name": "BlueRight",
     "target": "v5",
     "templates": {
       "EZ-Template": {
@@ -423,8 +423,8 @@
     "upload_options": {
       "description": "Code for a functioning drivetrain",
       "after": "screen",
-      "icon": "pizza",
-      "slot": 1
+      "icon": "ufo",
+      "slot": 3
     },
     "use_early_access": false
   }

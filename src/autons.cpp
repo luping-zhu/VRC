@@ -125,9 +125,32 @@ void blue_left(){
 
 
 void blue_right(){
-  chassis.pid_drive_set(35, 100);
+  /*
+  move backwards for 35 inches
+  grab mobile goal
+  score the preload donut to moblie goal
+  turn counter-clockwise 45 degrees
+  move forward 10 inches
+  intake donut and score it
+  turn counter-clockwise 90 degrees
+  move forward 15 inches
+  intake donut and score it 
+  turn counter-clockwise 90 degrees
+  move oward 15 inches
+  */
+  chassis.pid_drive_set(-35, 100);
   chassis.pid_wait();
-  chassis.pid_turn_set(-90, 100);
+  piston_mobile.set(true);
+  intake.move(INTAKE_SPEED);
+  pros::delay(2000);
+  chassis.pid_turn_set(45, 100);
   chassis.pid_wait();
-  chassis.pid_drive_set(10, 100);
+  chassis.pid_drive_set(15, 100);
+  chassis.pid_wait();
+  intake.move(INTAKE_SPEED);
+  pros::delay(2000);
+
+  //chassis.pid_turn_set(-90, 100);
+  //chassis.pid_wait();
+  //chassis.pid_drive_set(10, 100);
 }
