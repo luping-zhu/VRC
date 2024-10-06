@@ -423,7 +423,8 @@
     "upload_options": {
       "description": "Code for a functioning drivetrain",
       "after": "screen",
-      "icon": "power"
+      "icon": "power",
+      "slot": 1
     },
     "use_early_access": false
   }
