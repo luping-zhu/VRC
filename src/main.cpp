@@ -13,7 +13,7 @@ ez::Drive chassis(
 
     7,          // IMU (inertial) port
     3.25,       // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    100         // Wheel RPM
+    300         // Wheel RPM
 );
 
 /**
@@ -102,7 +102,7 @@ void autonomous()
   ez::as::auton_selector.selected_auton_call();
 
   // square();
-  // auton_test();
+  auton_test();
 }
 
 /**
@@ -122,7 +122,7 @@ void opcontrol()
 {
   // This is preference to what you like to drive on
   // MOTOR_BRAKE_HOLD (recommended), MOTOR_BRAKE_BRAKE, MOTOR_BRAKE_COAST
-  pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_HOLD;
+  pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_BRAKE;
   chassis.drive_brake_set(driver_preference_brake);
 
   //pros::Motor intake(INTAKE_PORT);
@@ -139,6 +139,9 @@ void opcontrol()
     // . . .
     // Put more user control code here!
     // . . .
+
+    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN))
+      autonomous();
 
     if (master.get_digital_new_press(DIGITAL_A)) {
       if (speed == 0) {
