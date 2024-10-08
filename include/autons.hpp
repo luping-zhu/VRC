@@ -7,6 +7,7 @@ void default_constants();
 
 void square();
 void auton_test();
+void blue_right();
 
 
 // Add autonomous function declarations here
