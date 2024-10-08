@@ -138,19 +138,25 @@ void blue_right(){
   turn counter-clockwise 90 degrees
   move oward 15 inches
   */
-  chassis.pid_drive_set(-35, 100);
+  chassis.pid_drive_set(-30, 100);
   chassis.pid_wait();
   piston_mobile.set(true);
   intake.move(INTAKE_SPEED);
   pros::delay(2000);
-  chassis.pid_turn_set(45, 100);
+  intake.move(0);
+  chassis.pid_turn_set(-60, 100);
   chassis.pid_wait();
   chassis.pid_drive_set(15, 100);
   chassis.pid_wait();
   intake.move(INTAKE_SPEED);
-  pros::delay(2000);
-
-  //chassis.pid_turn_set(-90, 100);
-  //chassis.pid_wait();
-  //chassis.pid_drive_set(10, 100);
+  pros::delay(3000);
+  intake.move(0);
+  // chassis.pid_turn_set(-90, 100);
+  // //chassis.pid_wait();
+  // chassis.pid_drive_set(15, 100);
+  // chassis.pid_wait();
+  // pros::delay(3000);
+  // chassis.pid_turn_set(-90, 100);
+  // chassis.pid_drive_set(15, 100);
+  // chassis.pid_wait();
 }
