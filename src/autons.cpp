@@ -84,6 +84,7 @@ void auton_test() {
   //chassis.pid_wait();
 }
 
+
 void blue_right(){
   /*
   move backwards for 35 inches
@@ -103,20 +104,72 @@ void blue_right(){
   piston_mobile.set(true);
   intake.move(INTAKE_SPEED);
   pros::delay(2000);
-  intake.move(0);
   chassis.pid_turn_set(-60, 100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(25, 100);
+  chassis.pid_wait();
+  pros::delay(3000);
+  chassis.pid_turn_set(-170, 100);
   chassis.pid_wait();
   chassis.pid_drive_set(15, 100);
   chassis.pid_wait();
-  intake.move(INTAKE_SPEED);
   pros::delay(3000);
-  intake.move(0);
-  // chassis.pid_turn_set(-90, 100);
-  // //chassis.pid_wait();
-  // chassis.pid_drive_set(15, 100);
-  // chassis.pid_wait();
+  chassis.pid_drive_set(-10, 100);
+  chassis.pid_wait();
+  piston_mobile.set(false);
+  chassis.pid_drive_set(5, 100);
+  chassis.pid_wait();
   // pros::delay(3000);
   // chassis.pid_turn_set(-90, 100);
   // chassis.pid_drive_set(15, 100);
   // chassis.pid_wait();
+}
+void red_left(){
+  chassis.pid_drive_set(35, 100);
+  chassis.pid_wait();
+  chassis.pid_turn_set(90, 100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(10, 100);
+}
+
+
+void red_right(){
+  chassis.pid_drive_set(-40, AUTON_SPEED);
+  chassis.pid_wait();
+  piston_mobile.set(true);
+  intake.move(INTAKE_SPEED);
+  pros::delay(2000);
+  //intake.move(0);
+  chassis.pid_turn_set(-73, TURN_SPEED2);
+  chassis.pid_wait();
+  chassis.pid_drive_set(19, AUTON_SPEED);
+  chassis.pid_wait();
+  pros::delay(3000);
+  intake.move(0);
+  chassis.pid_turn_set(110, TURN_SPEED2);
+  chassis.pid_wait();
+  piston_mobile.set(false);
+  chassis.pid_drive_set(33, AUTON_SPEED);
+  chassis.pid_wait();
+}
+
+
+void blue_left(){
+  chassis.pid_drive_set(-40, AUTON_SPEED);
+  chassis.pid_wait();
+  piston_mobile.set(true);
+  intake.move(INTAKE_SPEED);
+  pros::delay(2000);
+  //intake.move(0);
+  chassis.pid_turn_set(73, TURN_SPEED2);
+  chassis.pid_wait();
+  chassis.pid_drive_set(19, AUTON_SPEED);
+  chassis.pid_wait();
+  pros::delay(3000);
+  intake.move(0);
+  chassis.pid_turn_set(-110, TURN_SPEED2);
+  chassis.pid_wait();
+  piston_mobile.set(false);
+  chassis.pid_drive_set(33, AUTON_SPEED);
+  chassis.pid_wait();
 }

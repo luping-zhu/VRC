@@ -8,6 +8,8 @@ void default_constants();
 void square();
 void auton_test();
 void blue_right();
-
+void red_left();
+void blue_left();
+void red_right();
 
 // Add autonomous function declarations here

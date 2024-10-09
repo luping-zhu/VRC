@@ -102,7 +102,10 @@ void autonomous()
   ez::as::auton_selector.selected_auton_call();
 
   // square();
-  auton_test();
+  //auton_test();
+  //red_right();
+  blue_right();
+
 }
 
 /**
