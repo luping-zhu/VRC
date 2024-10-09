@@ -155,7 +155,11 @@ void opcontrol()
     }
 
     if (master.get_digital_new_press(DIGITAL_B)) {
+      if (speed == 0) {
         speed = -INTAKE_SPEED;
+      } else {
+        speed = 0;
+      }
     }
 
     intake.move(speed);
