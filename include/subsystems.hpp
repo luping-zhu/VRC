@@ -8,7 +8,7 @@ inline ez::Piston piston_mobile('H', false);
 inline ez::Piston piston_side('B', false);
 inline ez::Piston piston_top('C', false);
 
-inline int INTAKE_SPEED = 115;
+inline int INTAKE_SPEED = 90;
 
 // Your non-drivetrain motors, sensors, etc. should go here. Below are examples:
 // inline pros::Motor intake(1);
