@@ -148,14 +148,14 @@ void opcontrol()
 
     if (master.get_digital_new_press(DIGITAL_A)) {
       if (speed == 0) {
-        speed = -INTAKE_SPEED;
+        speed = INTAKE_SPEED;
       } else {
         speed = 0;
       }
     }
 
     if (master.get_digital_new_press(DIGITAL_B)) {
-        speed = INTAKE_SPEED;
+        speed = -INTAKE_SPEED;
     }
 
     intake.move(speed);
