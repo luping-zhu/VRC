@@ -1,172 +1,192 @@
 #include "main.h"
 
-//#define INTAKE_PORT 8
-
 /* Documentation */
 // https://ez-robotics.github.io/EZ-Template/
 
-// Chassis constructor, edit accordingly
-ez::Drive chassis(
-    // These are your drive motors, the first motor is used for sensing!
-    {-14, -16, 17},  // Left Chassis Ports, (use negative numbers for reversed motors!)
-    {15, 18, -19},  // Right Chassis Ports (use negative numbers for reversed motors!)
-
-    7,          // IMU (inertial) port
-    3.25,       // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    300         // Wheel RPM
-);
-
 /**
- * Runs initialization code. This occurs as soon as the program is started.
- *
- * All other competition modes are blocked by initialize; it is recommended
- * to keep execution time for this mode under a few seconds.
+ * Sets the speed you drive, turn, and swing at
+ * during autonomous. Values range from 0-127.
+ * I suggest against going above 100, as it will
+ * burn out your motors very quickly.
  */
-void initialize()
-{
-  ez::ez_template_print();
+const int DRIVE_SPEED = 110;
+const int TURN_SPEED = 90;
+const int SWING_SPEED = 90;
 
-  pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
-  // Configure your chassis controls\
+// PID Constants
+// Adjust accordingly, read documentation for more information
+//
+void default_constants() {
+  chassis.pid_heading_constants_set(11, 0, 20);
+  chassis.pid_drive_constants_set(20, 0, 100);
+  chassis.pid_turn_constants_set(3, 0.05, 20, 15);
+  chassis.pid_swing_constants_set(6, 0, 65);
 
-  // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_curve_buttons_toggle(true);
+  chassis.pid_turn_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  chassis.pid_swing_exit_condition_set(80_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
+  chassis.pid_drive_exit_condition_set(80_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
 
-  // Sets the active brake kP. We recommend ~2.  0 will disable.
-  chassis.opcontrol_drive_activebrake_set(2);
+  chassis.pid_turn_chain_constant_set(3_deg);
+  chassis.pid_swing_chain_constant_set(5_deg);
+  chassis.pid_drive_chain_constant_set(3_in);
 
-  // Defaults for curve. If using tank, only the first parameter is used.
-  // (Comment this line out if you have an SD card!) 
-  chassis.opcontrol_curve_default_set(0, 0);
-
-  // Set the constants using the function defined in autons.cpp
-  default_constants();
-
-  // Autonomous Selector
-  ez::as::auton_selector.autons_add(
-    {
-      // Add autons selections here
-    }
-  );
-
-  // Initialize chassis and auton selector
-  chassis.initialize();
-  ez::as::initialize();
-  master.rumble(".");
+  chassis.slew_drive_constants_set(7_in, 80);
 }
 
-/**
- * Runs while the robot is in the disabled state of Field Management System or
- * the VEX Competition Switch, following either autonomous or opcontrol. When
- * the robot is enabled, this task will exit.
- */
-void disabled() 
-{
-  // Add your code here
+// Add your autonomous functions here
+
+void square() {
+  chassis.pid_drive_set(95, 100);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(90, 70);
+  chassis.pid_wait();
+  master.print(0, 0, "IMU: %.2f", chassis.drive_imu_get());
+
+  chassis.pid_drive_set(95, 100);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(180, 70);
+  chassis.pid_wait();
+  master.print(0, 0, "IMU: %.2f", chassis.drive_imu_get());
+
+  chassis.pid_drive_set(95, 100);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(270, 70);
+  chassis.pid_wait();
+  master.print(0, 0, "IMU: %.2f", chassis.drive_imu_get());
+
+  chassis.pid_drive_set(95, 100);
+  chassis.pid_wait();
+  
 }
 
-/**
- * Runs after initialize(), and before autonomous when connected to the Field
- * Management System or the VEX Competition Switch. This is intended for
- * competition-specific initialization routines, such as an autonomous selector
- * on the LCD.
- *
- * This task will exit when the robot is enabled and autonomous or opcontrol
- * starts.
- */
-void competition_initialize() 
-{
-  // Add your code here
+void auton_test() {
+  chassis.pid_drive_set(-30, 100);
+  chassis.pid_wait();
+
+  piston_mobile.set(true);
+
+  intake.move(INTAKE_SPEED);
+  pros::delay(2000);
+  intake.move(0);
+  piston_mobile.set(false);
+
+  chassis.pid_drive_set(10, 100);
+  chassis.pid_wait();
+
+  //chassis.pid_turn_set(-90, 100);
+  //chassis.pid_wait();
+
+  //chassis.pid_drive_set(30, 100);
+  //chassis.pid_wait();
 }
 
-/**
- * Runs the user autonomous code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the autonomous
- * mode. Alternatively, this function may be called in initialize or opcontrol
- * for non-competition testing purposes.
- *
- * If the robot is disabled or communications is lost, the autonomous task
- * will be stopped. Re-enabling the robot will restart the task, not re-start it
- * from where it left off.
- */
-void autonomous() 
-{
-  chassis.pid_targets_reset();                // Resets PID targets to 0
-  chassis.drive_imu_reset();                  // Reset gyro position to 0
-  chassis.drive_sensor_reset();               // Reset drive sensors to 0
-  chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold. This helps autonomous consistency
 
-  // Calls selected auton from autonomous selector
-  ez::as::auton_selector.selected_auton_call();
 
-  // square();
-  //auton_test();
-  //red_right();
-  blue_right();
-
-}
-
-/**
- * Runs the operator control code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the operator
- * control mode.
- *
- * If no competition control is connected, this function will run immediately
- * following initialize().
- *
- * If the robot is disabled or communications is lost, the
- * operator control task will be stopped. Re-enabling the robot will restart the
- * task, not resume it from where it left off.
- */
-void opcontrol() 
-{
-  // This is preference to what you like to drive on
-  // MOTOR_BRAKE_HOLD (recommended), MOTOR_BRAKE_BRAKE, MOTOR_BRAKE_COAST
-  pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_BRAKE;
-  chassis.drive_brake_set(driver_preference_brake);
-
-  //pros::Motor intake(INTAKE_PORT);
-  int speed = 0;
-
-  while (true) 
-                                                         {
-    // chassis.opcontrol_tank();  // Tank control
-    chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
-    // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
-    // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
-    // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
-
-    // . . .
-    // Put more user control code here!
-    // . . .
-
-    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN))
-      autonomous();
-
-    if (master.get_digital_new_press(DIGITAL_A)) {
-      if (speed == 0) {
-        speed = INTAKE_SPEED;
-      } else {
-        speed = 0;
-      }
-    }
-
-    if (master.get_digital_new_press(DIGITAL_B)) {
-      if (speed == 0) {
-        speed = -INTAKE_SPEED;
-      } else {
-        speed = 0;
-      }
-    }
-
-    intake.move(speed);
-
-    piston_mobile.button_toggle(master.get_digital(DIGITAL_X));
-    
-    // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
-    pros::delay(ez::util::DELAY_TIME);
+void red_left(){
+  chassis.pid_drive_set(-30, 100);
+  chassis.pid_wait();
+  piston_mobile.set(true);
+  intake.move(INTAKE_SPEED);
+  pros::delay(2000);
+  chassis.pid_turn_set(60, 100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(25, 100);
+  chassis.pid_wait();
+  pros::delay(3000);
+  chassis.pid_turn_set(170, 100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(15, 100);
+  chassis.pid_wait();
+  pros::delay(3000);
+  chassis.pid_drive_set(-10, 100);
+  chassis.pid_wait();
+  piston_mobile.set(false);
+  chassis.pid_drive_set(5, 100);
+  chassis.pid_wait();
   }
+
+void blue_right(){
+  /*
+  move backwards for 35 inches
+  grab mobile goal
+  score the preload donut to moblie goal
+  turn counter-clockwise 45 degrees
+  move forward 10 inches
+  intake donut and score it
+  turn counter-clockwise 90 degrees
+  move forward 15 inches
+  intake donut and score it 
+  turn counter-clockwise 90 degrees
+  move oward 15 inches
+  */
+  chassis.pid_drive_set(-30, 100);
+  chassis.pid_wait();
+  piston_mobile.set(true);
+  intake.move(INTAKE_SPEED);
+  pros::delay(2000);
+  chassis.pid_turn_set(-60, 100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(25, 100);
+  chassis.pid_wait();
+  pros::delay(3000);
+  chassis.pid_turn_set(-170, 100);
+  chassis.pid_wait();
+  chassis.pid_drive_set(15, 100);
+  chassis.pid_wait();
+  pros::delay(3000);
+  chassis.pid_drive_set(-10, 100);
+  chassis.pid_wait();
+  piston_mobile.set(false);
+  chassis.pid_drive_set(5, 100);
+  chassis.pid_wait();
+  // pros::delay(3000);
+  // chassis.pid_turn_set(-90, 100);
+  // chassis.pid_drive_set(15, 100);
+  // chassis.pid_wait();
+}
+
+
+void red_right(){
+  chassis.pid_drive_set(-40, AUTON_SPEED);
+  chassis.pid_wait();
+  piston_mobile.set(true);
+  intake.move(INTAKE_SPEED);
+  pros::delay(2000);
+  //intake.move(0);
+  chassis.pid_turn_set(-60, TURN_SPEED2);
+  chassis.pid_wait();
+  chassis.pid_drive_set(19, AUTON_SPEED);
+  chassis.pid_wait();
+  pros::delay(3000);
+  intake.move(0);
+  chassis.pid_turn_set(110, TURN_SPEED2);
+  chassis.pid_wait();
+  piston_mobile.set(false);
+  chassis.pid_drive_set(33, AUTON_SPEED);
+  chassis.pid_wait();
+}
+
+
+void blue_left(){
+  chassis.pid_drive_set(-40, AUTON_SPEED);
+  chassis.pid_wait();
+  piston_mobile.set(true);
+  intake.move(INTAKE_SPEED);
+  pros::delay(2000);
+  //intake.move(0);
+  chassis.pid_turn_set(60, TURN_SPEED2);
+  chassis.pid_wait();
+  chassis.pid_drive_set(19, AUTON_SPEED);
+  chassis.pid_wait();
+  pros::delay(3000);
+  intake.move(0);
+  chassis.pid_turn_set(-110, TURN_SPEED2);
+  chassis.pid_wait();
+  piston_mobile.set(false);
+  chassis.pid_drive_set(33, AUTON_SPEED);
+  chassis.pid_wait();
 }
