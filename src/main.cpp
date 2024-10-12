@@ -1,18 +1,19 @@
 #include "main.h"
-//hi!
-//hiya
+
+//#define INTAKE_PORT 8
+
 /* Documentation */
 // https://ez-robotics.github.io/EZ-Template/
 
 // Chassis constructor, edit accordingly
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {1, -2, -3},  // Left Chassis Ports, (use negative numbers for reversed motors!)
-    {-11, 12, 13},  // Right Chassis Ports (use negative numbers for reversed motors!)
+    {-14, -16, 17},  // Left Chassis Ports, (use negative numbers for reversed motors!)
+    {15, 18, -19},  // Right Chassis Ports (use negative numbers for reversed motors!)
 
     7,          // IMU (inertial) port
     3.25,       // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    100         // Wheel RPM
+    300         // Wheel RPM
 );
 
 /**
@@ -99,6 +100,12 @@ void autonomous()
 
   // Calls selected auton from autonomous selector
   ez::as::auton_selector.selected_auton_call();
+
+  // square();
+  //auton_test();
+  //red_right();
+  blue_right();
+
 }
 
 /**
@@ -118,11 +125,14 @@ void opcontrol()
 {
   // This is preference to what you like to drive on
   // MOTOR_BRAKE_HOLD (recommended), MOTOR_BRAKE_BRAKE, MOTOR_BRAKE_COAST
-  pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_HOLD;
+  pros::motor_brake_mode_e_t driver_preference_brake = MOTOR_BRAKE_BRAKE;
   chassis.drive_brake_set(driver_preference_brake);
 
+  //pros::Motor intake(INTAKE_PORT);
+  int speed = 0;
+
   while (true) 
-  {
+                                                         {
     // chassis.opcontrol_tank();  // Tank control
     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
@@ -133,6 +143,37 @@ void opcontrol()
     // Put more user control code here!
     // . . .
 
+    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN))
+      autonomous();
+
+    // if (master.get_digital_new_press(DIGITAL_L1)) {
+    //   INTAKE_SPEED += 5;
+    // }
+
+    // if (master.get_digital_new_press(DIGITAL_L2)) {
+    //   INTAKE_SPEED -= 5;
+    // }
+
+    if (master.get_digital_new_press(DIGITAL_A)) {
+      if (speed == 0) {
+        speed = INTAKE_SPEED;
+      } else {
+        speed = 0;
+      }
+    }
+
+    if (master.get_digital_new_press(DIGITAL_B)) {
+      if (speed == 0) {
+        speed = -INTAKE_SPEED;
+      } else {
+        speed = 0;
+      }
+    }
+
+    intake.move(speed);
+
+    piston_mobile.button_toggle(master.get_digital(DIGITAL_X));
+    
     // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
     pros::delay(ez::util::DELAY_TIME);
   }
