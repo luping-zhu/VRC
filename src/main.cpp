@@ -144,19 +144,23 @@ void opcontrol()
     // Put more user control code here!
     // . . .
 
-    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN))
-      autonomous();
+//    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN))
+//      autonomous();
 
     if (master.get_digital_new_press(DIGITAL_A)) {
       if (speed == 0) {
-        speed = -INTAKE_SPEED;
+        speed = INTAKE_SPEED;
       } else {
         speed = 0;
       }
     }
 
     if (master.get_digital_new_press(DIGITAL_B)) {
-        speed = INTAKE_SPEED;
+      if (speed == 0) {
+        speed = -INTAKE_SPEED;
+      } else {
+        speed = 0;
+      }
     }
 
     intake.move(speed);
